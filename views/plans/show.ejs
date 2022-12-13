@@ -15,7 +15,17 @@
     <h2>
         <%= plan.location%>
     </h2>
-    <a href="/plans">Back to the list</a>
+    <p>
+        <a href="/plans/<%= plan._id%>/edit">Edit</a>
+    </p>
+    <p>
+    <form action="/plans/<%= plan._id%>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form>
+    </p>
+    <footer>
+        <a href="/plans">Back to the list</a>
+    </footer>
 </body>
 
 </html>
