@@ -1,27 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Plan</title>
-</head>
-
-<body>
-    <h1>Add New Plan</h1>
-    <form action="/plans" method="POST">
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="plan[name]">
+    <div class="row">
+        <h1 class="text-center">Add New Plan</h1>
+        <div class="col-6 offset-3">
+            <form action="/plans" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="plan[name]">
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="plan[location]">
+                </div>
+                <div class="mb-3">
+                    <label for="duration" class="form-label">Duration (days)</label>
+                    <input type="number" class="form-control" id="duration" name="plan[duration]">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="3" name="plan[description]"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="text" class="form-control" id="image" name="plan[image]">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary">Add Plan</button>
+                </div>
+            </form>
+            <div class="mb-3">
+                <a class="btn btn-secondary" href="/plans">Back to the list</a>
+            </div>
         </div>
-        <div>
-            <label for="location">Location</label>
-            <input type="text" id="location" name="plan[location]">
-        </div>
-        <button>Add Plan</button>
-    </form>
-    <a href="/plans">Back to the list</a>
-</body>
-
-</html>
+    </div>

@@ -5,6 +5,8 @@ const PlanSchema = new Schema({
     name: String,
     description: String,
     location: String,
+    duration: Number,
+    image: String,
     stops: Array
 });
 
