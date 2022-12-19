@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
+const { planSchema } = require('./schemas');
+const wrapAsync = require('./utils/wrapAsync');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const Plan = require('./models/plan')
 
@@ -27,11 +30,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
+const validatePlan = (req, res, next) => {
+    const { error } = planSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+    else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.get('/plans', async (req, res) => {
+app.get('/plans', wrapAsync(async (req, res) => {
     const { country } = req.query;
 
     if (country) {
@@ -44,38 +58,49 @@ app.get('/plans', async (req, res) => {
         res.render('plans/index', { plans, country: 'all countries' });
     }
 
-});
+}));
 
 app.get('/plans/new', (req, res) => {
     res.render('plans/new');
 });
 
-app.post('/plans', async (req, res) => {
+app.post('/plans', validatePlan, wrapAsync(async (req, res, next) => {
     const plan = new Plan(req.body.plan);
     await plan.save();
     res.redirect(`/plans/${plan._id}`)
-});
 
-app.get('/plans/:id', async (req, res) => {
+}));
+
+app.get('/plans/:id', wrapAsync(async (req, res) => {
     const plan = await Plan.findById(req.params.id);
     res.render('plans/show', { plan });
-});
+}));
 
-app.get('/plans/:id/edit', async (req, res) => {
+app.get('/plans/:id/edit', wrapAsync(async (req, res) => {
     const plan = await Plan.findById(req.params.id);
     res.render('plans/edit', { plan });
-});
+}));
 
-app.put('/plans/:id', async (req, res) => {
+app.put('/plans/:id', validatePlan, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const plan = await Plan.findByIdAndUpdate(id, { ...req.body.plan });
     res.redirect(`/plans/${plan._id}`);
-});
+}));
 
-app.delete('/plans/:id', async (req, res) => {
+app.delete('/plans/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Plan.findByIdAndDelete(id);
     res.redirect('/plans');
+}));
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404));
+})
+
+app.use((err, req, res, next) => {
+    const { statusCode = 500, message = 'Something went wrong' } = err;
+    res.status(statusCode).render('error', { message });
+    //res.send('Oh boy, something went wrong!')
 });
 
 app.listen(3000, () => {

@@ -2,29 +2,54 @@
     <div class="row">
         <h1 class="text-center">Edit Plan</h1>
         <div class="col-6 offset-3">
-            <form action="/plans/<%= plan._id%>?_method=PUT" method="POST">
+            <form action="/plans/<%= plan._id%>?_method=PUT" method="POST" novalidate class="needs-validation">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="plan[name]" value="<%= plan.name%>">
+                    <input type="text" class="form-control" id="name" name="plan[name]" value="<%= plan.name%>"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a name for the plan.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
                     <input type="text" class="form-control" id="location" name="plan[location]"
-                        value="<%= plan.location%>">
+                        value="<%= plan.location%>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a location.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="duration" class="form-label">Duration (days)</label>
                     <input type="number" class="form-control" id="duration" name="plan[duration]"
-                        value="<%= plan.duration%>">
+                        value="<%= plan.duration%>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a duration.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" id="description" rows="3"
                         name="plan[description]"><%= plan.description%></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Image URL</label>
                     <input type="text" class="form-control" id="image" name="plan[image]" value="<%= plan.image%>">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3"><button class="btn btn-primary">Save</button></div>
 
