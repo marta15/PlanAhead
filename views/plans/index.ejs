@@ -1,6 +1,12 @@
 <% layout('layouts/boilerplate') %>
-    <h1>All Plans</h1>
-    <a href="/plans/new">Create a new plan</a>
+    <h1 class="mb-3">All Plans in <%= country %>
+    </h1>
+    <div class="row">
+        <div class="col-md-4"><a class="btn btn-secondary mb-3" href="/plans/new">Create a new plan</a></div>
+        <div class="col-md-8">Most popular categories: <a class="px-3" href="/plans?country=france">France</a><a
+                class="px-3" href="/plans?country=italy">Italy</a></div>
+    </div>
+
 
     <% for (let plan of plans) {%>
         <div class="card mb-3">
@@ -21,7 +27,7 @@
                         <p class="card-text">
                             <%= plan.description%>
                         </p>
-                        <a href="/plans/<%= plan._id%>" class="btn btn-primary">Details</a>
+                        <a href="/plans/<%= plan._id%>" class="btn btn-info">Details</a>
                     </div>
                 </div>
             </div>

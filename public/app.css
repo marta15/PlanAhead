@@ -1,0 +1,17 @@
+.brand-font {
+    font-family: 'Megrim', cursive;
+    font-weight: 800;
+}
+
+.basic-font {
+    font-family: 'Lato', sans-serif;
+}
+
+nav.basic-font {
+    font-family: 'Lato', sans-serif;
+}
+
+input.form-control,
+textarea.form-control {
+    background-color: white;
+}

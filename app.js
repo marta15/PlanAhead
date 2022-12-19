@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost:27017/plan-ahead', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -25,14 +25,25 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.render('home');
 });
 
 app.get('/plans', async (req, res) => {
-    const plans = await Plan.find({});
-    res.render('plans/index', { plans });
+    const { country } = req.query;
+
+    if (country) {
+        const plans = await Plan.find({ "location": { $regex: new RegExp(country, "i") } });
+        let countryString = country.toString();
+        res.render('plans/index', { plans, country: countryString.charAt(0).toUpperCase() + countryString.substring(1) });
+    }
+    else {
+        const plans = await Plan.find({});
+        res.render('plans/index', { plans, country: 'all countries' });
+    }
+
 });
 
 app.get('/plans/new', (req, res) => {
