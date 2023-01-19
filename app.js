@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
-const { planSchema } = require('./schemas');
+const { planSchema, daySchema } = require('./schemas');
 const wrapAsync = require('./utils/wrapAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
@@ -32,6 +32,17 @@ app.use(express.static('public'));
 
 const validatePlan = (req, res, next) => {
     const { error } = planSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+    else {
+        next();
+    }
+}
+
+const validateDay = (req, res, next) => {
+    const { error } = daySchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);
@@ -91,6 +102,21 @@ app.delete('/plans/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Plan.findByIdAndDelete(id);
     res.redirect('/plans');
+}));
+
+app.post('/plans/:id/days', validateDay, wrapAsync(async (req, res) => {
+    const plan = await Plan.findById(req.params.id);
+    const day = req.body.day;
+    plan.days.push(day);
+    await plan.save();
+    res.redirect(`/plans/${plan._id}/edit`);
+}));
+
+app.delete('/plans/:id/days/:dayId', wrapAsync(async (req, res) => {
+    const plan = await Plan.findById(req.params.id);
+    plan.days.splice(req.params.dayId, 1);
+    await plan.save();
+    res.redirect(`/plans/${plan._id}/edit`);
 }));
 
 app.all('*', (req, res, next) => {

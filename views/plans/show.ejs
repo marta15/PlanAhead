@@ -3,25 +3,28 @@
         <h1 class="text-center mb-3">
             <%= plan.name %>
         </h1>
-        <div class="col-6 offset-3">
-            <div class="card mb-3">
-                <img src="<%= plan.image%>" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%= plan.location%>, <%= plan.duration%> days
-                    </h5>
-                    <p class="card-text">
-                        <%= plan.description%>
-                    </p>
-                </div>
-                <div class="card-body">
-                    <a class="card-link btn btn-primary" href="/plans/<%=plan._id%>/edit">Edit</a>
-                    <form class="d-inline" action="/plans/<%=plan._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-                <div class="card-footer text-muted">
-                    2 days ago
+        <div class="col">
+            <div class="card shadow-sm mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-5"><img src="<%= plan.image%>" class="card-img" alt="Background image"></div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= plan.location%>, <%= plan.duration%> days
+                            </h5>
+                            <p class="card-text">
+                                <%= plan.description%>
+                            </p>
+                            <a class="card-link btn btn-primary" href="/plans/<%=plan._id%>/edit">Edit</a>
+                            <form class="d-inline" action="/plans/<%=plan._id%>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                            <div class="card-text text-muted">
+                                2 days ago
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -29,4 +32,26 @@
                 <a class="btn btn-secondary" href="/plans">Back to the list</a>
             </div>
         </div>
+    </div>
+    <div class="row mb-3">
+
+        <% for (let [i, day] of plan.days.entries()) { %>
+            <div class="col">
+                <div class="card shadow rounded bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= day.dayOfTheWeek %> <small>
+                                    <%= day.date %>
+                                </small>
+                        </h5>
+                        <p class="card-text">
+                            <%= day.stops %>
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <% } %>
+
     </div>

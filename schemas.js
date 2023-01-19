@@ -10,3 +10,11 @@ module.exports.planSchema = Joi.object({
     }).required()
 })
 
+module.exports.daySchema = Joi.object({
+    day: Joi.object({
+        dayOfTheWeek: Joi.string().required(),
+        date: Joi.string().required().required(),
+        steps: Joi.array().items(Joi.string())
+    }).required()
+})
+

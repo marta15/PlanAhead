@@ -9,7 +9,11 @@ const PlanSchema = new Schema({
     location: String,
     duration: Number,
     image: String,
-    stops: Array
+    days: [{
+        dayOfTheWeek: String,
+        date: String,
+        stops: [String]
+    }]
 }, opts);
 
 PlanSchema.virtual('country').get(function () {
