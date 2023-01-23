@@ -4,12 +4,15 @@ const mongoose = require('mongoose');
 const engine = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
+const methodOverride = require('method-override');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 const ExpressError = require('./utils/ExpressError');
-const methodOverride = require('method-override');
-
-const plans = require('./routes/plans');
-const days = require('./routes/days');
+const planRoutes = require('./routes/plans');
+const dayRoutes = require('./routes/days');
+const userRoutes = require('./routes/users');
+const User = require('./models/user');
 
 mongoose.set('strictQuery', true);
 mongoose.connect('mongodb://localhost:27017/plan-ahead', {
@@ -46,14 +49,23 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
+    res.locals.user = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 });
 
-app.use('/plans', plans);
-app.use('/plans/:id/days', days);
+app.use('/', userRoutes);
+app.use('/plans', planRoutes);
+app.use('/plans/:id/days', dayRoutes);
 
 app.get('/', (req, res) => {
     res.render('home');

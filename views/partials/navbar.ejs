@@ -17,6 +17,16 @@
                     <a class="nav-link" href="/plans/new">Create a Plan</a>
                 </li>
             </ul>
+            <div class="navbar-nav ms-auto">
+                <% if(!user) {%>
+                    <a class="nav-link" href="/login">Log in</a>
+                    <a class="nav-link" href="/register">Register</a>
+                    <%} else {%>
+                        <span class="navbar-text me-3 d-none d-lg-inline">Hi, <%= user.username%>!</span>
+                        <a class="nav-link" href="/logout">Logout</a>
+                        <%} %>
+            </div>
         </div>
+
     </div>
 </nav>

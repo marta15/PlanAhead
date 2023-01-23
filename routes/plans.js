@@ -5,6 +5,7 @@ const wrapAsync = require('../utils/wrapAsync');
 const ExpressError = require('../utils/ExpressError');
 const Plan = require('../models/plan');
 const { planSchema } = require('../schemas');
+const { isLoggedIn } = require('../middleware');
 
 const validatePlan = (req, res, next) => {
     const { error } = planSchema.validate(req.body);
@@ -41,11 +42,11 @@ router.get('/', wrapAsync(async (req, res) => {
     }
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('plans/new');
 });
 
-router.post('/', validatePlan, wrapAsync(async (req, res, next) => {
+router.post('/', validatePlan, isLoggedIn, wrapAsync(async (req, res, next) => {
     const plan = new Plan(req.body.plan);
     await plan.save();
     req.flash('success', 'Successfully created a plan');
@@ -60,19 +61,19 @@ router.get('/:id', wrapAsync(async (req, res) => {
     res.render('plans/show', { plan });
 }));
 
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
     const plan = await Plan.findById(req.params.id);
     res.render('plans/edit', { plan });
 }));
 
-router.put('/:id', validatePlan, wrapAsync(async (req, res) => {
+router.put('/:id', validatePlan, isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const plan = await Plan.findByIdAndUpdate(id, { ...req.body.plan });
     req.flash('success', 'Successfully updated plan');
     res.redirect(`/plans/${plan._id}`);
 }));
 
-router.delete('/:id', wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Plan.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted plan');

@@ -15,3 +15,10 @@ input.form-control,
 textarea.form-control {
     background-color: white;
 }
+
+.home {
+    background-image: url(david-marcu-78A265wPiO4-unsplash.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
