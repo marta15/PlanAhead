@@ -15,13 +15,15 @@
                             <p class="card-text">
                                 <%= plan.description%>
                             </p>
-                            <a class="card-link btn btn-primary" href="/plans/<%=plan._id%>/edit">Edit</a>
-                            <form class="d-inline" action="/plans/<%=plan._id%>?_method=DELETE" method="POST">
-                                <button class="btn btn-danger">Delete</button>
-                            </form>
-                            <div class="card-text text-muted">
-                                2 days ago
-                            </div>
+                            <% if(user && plan.author.equals(user._id)) {%>
+                                <a class="card-link btn btn-primary" href="/plans/<%=plan._id%>/edit">Edit</a>
+                                <form class="d-inline" action="/plans/<%=plan._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                                <% } %>
+                                    <div class="card-text text-muted">
+                                        created 2 days ago by <%= plan.author.username %>
+                                    </div>
                         </div>
 
                     </div>
@@ -29,7 +31,7 @@
             </div>
 
             <div class="mb-3">
-                <a class="btn btn-secondary" href="/plans">Back to the list</a>
+                <a class="btn btn-primary" href="/plans">Back to the list</a>
             </div>
         </div>
     </div>
@@ -37,7 +39,7 @@
 
         <% for (let [i, day] of plan.days.entries()) { %>
             <div class="col">
-                <div class="card shadow rounded bg-light">
+                <div class="card shadow rounded bg-secondary">
                     <div class="card-body">
                         <h5 class="card-title">
                             <%= day.dayOfTheWeek %> <small>
@@ -46,7 +48,6 @@
                         </h5>
                         <p class="card-text">
                             <%= day.stops %>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                         </p>
                     </div>
 

@@ -9,6 +9,10 @@ const PlanSchema = new Schema({
     location: String,
     duration: Number,
     image: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     days: [{
         dayOfTheWeek: String,
         date: String,

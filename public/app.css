@@ -16,9 +16,13 @@ textarea.form-control {
     background-color: white;
 }
 
-.home {
-    background-image: url(david-marcu-78A265wPiO4-unsplash.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+nav.navbar.custom-navbar .navbar-collapse .navbar-nav a,
+.navbar-text {
+
+    color: var(--bs-primary) !important;
+}
+
+nav.navbar.custom-navbar .navbar-brand {
+
+    color: var(--bs-primary) !important;
 }

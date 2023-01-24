@@ -1,17 +1,26 @@
-// Your variable overrides
-$body-color: #023336;
-$body-bg: #f9fdf4;
-$link-color: #5F0F40;
-$link-hover-color: #9e89b1;
+$xanadu: #79877fff;
+$linen: #f7ede2ff;
+$isabelline: #f8f5f1ff;
+$misty-rose: #f9e0dcff;
+$navajo-white: #fbdfb2ff;
+$melon: #eead96ff;
+$new-york-pink: #e07b79ff;
+$green-sheen: #7da79cff;
+
+$body-color: #252d2d;
+$body-bg: #F8F8F8;
+$link-color: #eead96ff;
+$link-hover-color: #e07b79ff;
 
 $theme-colors: (
-    "primary": #023336,
-    "secondary": #5F0F40,
-    "light": #fbf4ee,
-    "muted": #9e89b1,
-    "dark": #023336,
-    "info": #A54001,
-    "danger": #9A031E
+    "primary": #79877fff,
+    "secondary": #f7ede2ff,
+    "light": #E8E6E5,
+    "muted": #fbdfb2ff,
+    "dark": #252d2d,
+    "info": #eead96ff,
+    "danger": #e07b79ff,
+    "success": #7da79cff
 );
 
 // Bootstrap and its default variables

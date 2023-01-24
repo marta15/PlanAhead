@@ -51,7 +51,7 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="mb-3"><button class="btn btn-primary">Save</button></div>
+                <div class="mb-3"><button class="btn btn-success">Save</button></div>
 
             </form>
             <div class="mb-3">
@@ -63,7 +63,7 @@
             <div class="row">
                 <% for (let [i, day] of plan.days.entries()) { %>
                     <div class="col">
-                        <div class="card shadow rounded bg-light">
+                        <div class="card shadow rounded bg-secondary">
                             <form action="/plans/<%= plan._id%>/days/<%=i%>?_method=DELETE" method="POST">
                                 <button class="btn-close btn-sm" aria-label="Delete"></button>
                             </form>
@@ -74,11 +74,23 @@
                                         </small>
                                 </h5>
                                 <p class="card-text">
-                                    <%= day.stops %>
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                    <% for (let [j, stop] of day.stops.entries()) { %>
+                                        <div class="card rounded shadow-sm bg-muted flex-row justify-content-between">
+                                            <span>
+                                                <%= stop %>
+                                            </span>
+                                            <form class="d-inline"
+                                                action="/plans/<%= plan._id%>/days/<%=i%>/stops/<%=j%>?_method=DELETE"
+                                                method="POST">
+                                                <button class="btn btn-sm" aria-label="Delete"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </form>
+
+                                        </div>
+                                        <% } %>
                                 </p>
                                 <div class="mt-2">
-                                    <form action="">
+                                    <form action="/plans/<%= plan._id%>/days/<%=i%>/stops" method="POST">
                                         <input id="stop" name="stop" class="form-control" />
                                         <button class="btn btn-muted btn-sm" aria-label="Add a stop">Add a
                                             stop</button>
@@ -106,7 +118,7 @@
                                             <input id="date" name="day[date]" class="form-control" required />
                                         </div>
 
-                                        <div class="mb-3"><button class="btn btn-primary">Save</button></div>
+                                        <div class="mb-3"><button class="btn btn-success">Save</button></div>
                                     </form>
                                 </div>
                             </div>

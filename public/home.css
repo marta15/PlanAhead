@@ -1,0 +1,16 @@
+.home {
+    background-image: url(david-marcu-78A265wPiO4-unsplash.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+nav.navbar.custom-navbar {
+    background-color: var(--bs-dark) !important;
+    background-image: none !important;
+}
+
+footer.footer.custom-footer {
+    background-color: var(--bs-dark) !important;
+    background-image: none !important;
+}

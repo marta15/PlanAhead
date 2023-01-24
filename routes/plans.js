@@ -4,23 +4,11 @@ const router = express.Router();
 const wrapAsync = require('../utils/wrapAsync');
 const ExpressError = require('../utils/ExpressError');
 const Plan = require('../models/plan');
-const { planSchema } = require('../schemas');
-const { isLoggedIn } = require('../middleware');
-
-const validatePlan = (req, res, next) => {
-    const { error } = planSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    }
-    else {
-        next();
-    }
-}
+const { isLoggedIn, isAuthor, validatePlan } = require('../middleware');
 
 const ObjectId = require('mongoose').Types.ObjectId;
-function isValidObjectId(id) {
 
+function isValidObjectId(id) {
     if (ObjectId.isValid(id)) {
         if ((String)(new ObjectId(id)) === id)
             return true;
@@ -46,8 +34,9 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('plans/new');
 });
 
-router.post('/', validatePlan, isLoggedIn, wrapAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validatePlan, wrapAsync(async (req, res, next) => {
     const plan = new Plan(req.body.plan);
+    plan.author = req.user._id;
     await plan.save();
     req.flash('success', 'Successfully created a plan');
     res.redirect(`/plans/${plan._id}`)
@@ -56,24 +45,28 @@ router.post('/', validatePlan, isLoggedIn, wrapAsync(async (req, res, next) => {
 
 router.get('/:id', wrapAsync(async (req, res) => {
     if (!isValidObjectId(req.params.id)) throw new ExpressError("Could not find plan", 400);
-    const plan = await Plan.findById(req.params.id);
+    const plan = await Plan.findById(req.params.id).populate('author');
     if (!plan) throw new ExpressError("Could not find plan", 400);
     res.render('plans/show', { plan });
 }));
 
-router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isAuthor, wrapAsync(async (req, res) => {
     const plan = await Plan.findById(req.params.id);
+    if (!plan) {
+        req.flash('error', 'Cannot find that plan');
+        return res.redirect('/plans');
+    }
     res.render('plans/edit', { plan });
 }));
 
-router.put('/:id', validatePlan, isLoggedIn, wrapAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, validatePlan, wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const plan = await Plan.findByIdAndUpdate(id, { ...req.body.plan });
+    const p = await Plan.findByIdAndUpdate(id, { ...req.body.plan });
     req.flash('success', 'Successfully updated plan');
-    res.redirect(`/plans/${plan._id}`);
+    res.redirect(`/plans/${p._id}`);
 }));
 
-router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Plan.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted plan');
