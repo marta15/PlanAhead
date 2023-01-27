@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "scss": "sass scss/custom.scss custom/style.css",
+    "build": "sass scss/custom.scss public/app.css",
     "start": "node --use_strict app.js",
     "watch": "nodemon app.js"
   },

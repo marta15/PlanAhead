@@ -58,12 +58,16 @@
                 <a class="btn btn-secondary" href="/plans/<%= plan._id%>">Back to plan</a>
             </div>
         </div>
-
+        <script src="/sortCards.js"></script>
+        <span aria-live="polite" class="assistive-text visually-hidden" id="operation">Press Spacebar to
+            reorder</span>
         <div class="col-8 offset-2 col-lg-6 offset-lg-1">
-            <div class="row">
+            <div class="row" id="draggableCards" role="listbox">
                 <% for (let [i, day] of plan.days.entries()) { %>
                     <div class="col">
-                        <div class="card shadow rounded bg-secondary">
+                        <div id="<%= i %>" role="option" aria-describedby="operation" tabindex="0" draggable="true"
+                            class="card drag-card shadow rounded bg-secondary" ondragstart="dragStart(event)"
+                            ondragover="allowDrop(event)" ondrop="dragDrop(event)">
                             <form action="/plans/<%= plan._id%>/days/<%=i%>?_method=DELETE" method="POST">
                                 <button class="btn-close btn-sm" aria-label="Delete"></button>
                             </form>
