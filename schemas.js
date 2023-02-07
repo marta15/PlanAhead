@@ -6,7 +6,7 @@ module.exports.planSchema = Joi.object({
         location: Joi.string().required(),
         duration: Joi.number().required().min(1),
         description: Joi.string(),
-        image: Joi.string()
+        imgUrl: Joi.string().allow(null, '')
     }).required()
 })
 

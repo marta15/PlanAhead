@@ -3,7 +3,7 @@
     <div class="row">
         <h1 class="text-center">Add New Plan</h1>
         <div class="col-6 offset-3">
-            <form action="/plans" method="POST" novalidate class="needs-validation">
+            <form action="/plans" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" name="plan[name]" required>
@@ -37,16 +37,14 @@
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" id="description" rows="3" name="plan[description]"></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input type="text" class="form-control" id="image" name="plan[image]">
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
+                    <label for="image" class="form-label">Upload an image</label>
+                    <input class="form-control" type="file" name="image" id="image">
+                </div>
+                <div class="mb-3">
+                    <label for="imgUrl" class="form-label">Or provide a URL</label>
+                    <input type="text" class="form-control" id="imgUrl" name="plan[imgUrl]">
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary">Add Plan</button>

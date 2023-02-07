@@ -1,5 +1,10 @@
 const ExpressError = require('../utils/ExpressError');
 const Plan = require('../models/plan');
+const { cloudinary } = require('../cloudinary');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 const ObjectId = require('mongoose').Types.ObjectId;
 function isValidObjectId(id) {
@@ -29,12 +34,21 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.create = async (req, res, next) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.plan.location,
+        limit: 1
+    }).send();
     const plan = new Plan(req.body.plan);
+    plan.geometry = geoData.body.features[0].geometry;
+    if (req.file)
+        plan.image = { url: req.file.path, filename: req.file.filename };
+    else
+        plan.image = { url: req.body.plan.imgUrl, filename: '' }
     plan.author = req.user._id;
     await plan.save();
+    console.log(plan);
     req.flash('success', 'Successfully created a plan');
     res.redirect(`/plans/${plan._id}`)
-
 };
 
 module.exports.show = async (req, res) => {
@@ -55,14 +69,28 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.update = async (req, res) => {
     const { id } = req.params;
-    const p = await Plan.findByIdAndUpdate(id, { ...req.body.plan });
+   
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.plan.location,
+        limit: 1
+    }).send();
+    
+    const plan = await Plan.findByIdAndUpdate(id, { ...req.body.plan });
+    plan.geometry = geoData.body.features[0].geometry;
+    if (req.file)
+        plan.image = { url: req.file.path, filename: req.file.filename };
+    else if (req.body.plan.imgUrl)
+        plan.image = { url: req.body.plan.imgUrl, filename: '' };
+    await plan.save();
     req.flash('success', 'Successfully updated plan');
-    res.redirect(`/plans/${p._id}`);
+    res.redirect(`/plans/${plan._id}`);
 };
 
 module.exports.delete = async (req, res) => {
     const { id } = req.params;
-    await Plan.findByIdAndDelete(id);
+    const plan = await Plan.findByIdAndDelete(id);
+    if (plan.image.filename.length > 0)
+        await cloudinary.uploader.destroy(plan.image.filename);
     req.flash('success', 'Successfully deleted plan');
     res.redirect('/plans');
 };
