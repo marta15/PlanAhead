@@ -9,8 +9,8 @@ $green-sheen: #7da79cff;
 
 $body-color: #252d2d;
 $body-bg: #F8F8F8;
-$link-color: #eead96ff;
-$link-hover-color: #e07b79ff;
+$link-color: #79877fff;
+$link-hover-color: #7da79cff;
 
 $theme-colors: (
     "primary": #79877fff,
@@ -20,7 +20,8 @@ $theme-colors: (
     "dark": #252d2d,
     "info": #eead96ff,
     "danger": #e07b79ff,
-    "success": #7da79cff
+    "success": #7da79cff,
+    "background": #F8F8F8
 );
 
 // Bootstrap and its default variables
@@ -39,8 +40,12 @@ nav.basic-font {
     font-family: 'Lato', sans-serif;
 }
 
+body{
+    font-family: 'Lato', sans-serif;
+}
+
 input.form-control,
-textarea.form-control {
+textarea.form-control, input.form-control:focus, textarea.form-control:focus {
     background-color: white;
 }
 
@@ -59,7 +64,29 @@ nav.navbar.custom-navbar .navbar-brand {
     cursor: move;
 }
 
+#mapModal .modal-body{
+    max-height: 90vh;
+    overflow-y: scroll;
+}
+
+#mapContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
 #map {
+    width: 100%;
+    height: 100%;
+    min-width: 400px;
+    min-height: 400px;
+}
+
+.mapboxgl-canvas {
+    left: 0;
+}
+
+#showMap{
     width: 100%;
     height: 300px;
 }

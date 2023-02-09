@@ -5,7 +5,6 @@
             <%= plan.name %>
         </h1>
         <div class="col">
-            <div id="map"></div>
             <div class="card shadow-sm mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-5"><img src="<%= plan.image.url%>" class="card-img" alt="Background image"></div>
@@ -22,10 +21,10 @@
                                 <form class="d-inline" action="/plans/<%=plan._id%>?_method=DELETE" method="POST">
                                     <button class="btn btn-danger">Delete</button>
                                 </form>
-                                <% } %>
-                                    <div class="card-text text-muted">
-                                        created 2 days ago by <%= plan.author.username %>
-                                    </div>
+                            <% } %>
+                            <div class="card-text text-muted">
+                                created 2 days ago by <%= plan.author.username %>
+                            </div>
                         </div>
 
                     </div>
@@ -38,7 +37,7 @@
         </div>
     </div>
     <div class="row mb-3">
-
+        <div id="showMap"></div>
         <% for (let [i, day] of plan.days.entries()) { %>
             <div class="col">
                 <div class="card shadow rounded bg-secondary">

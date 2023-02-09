@@ -46,5 +46,10 @@ PlanSchema.virtual('country').get(function () {
     }
     else return this.location;
 });
+PlanSchema.virtual('properties.popUpMarkup').get(function () {
+    return `
+        <strong><a href='/plans/${this._id}'>${this.name}</a></strong>
+        <p>${this.duration} days</p>`;
+})
 
 module.exports = mongoose.model('Plan', PlanSchema);

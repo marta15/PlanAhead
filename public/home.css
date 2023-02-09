@@ -1,16 +1,26 @@
-.home {
-    background-image: url(david-marcu-78A265wPiO4-unsplash.jpg);
+body {
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+    url(david-marcu-78A265wPiO4-unsplash.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    box-shadow: inset 0 0 5rem rgba(0,0,0,0.5);
 }
 
-nav.navbar.custom-navbar {
-    background-color: var(--bs-dark) !important;
-    background-image: none !important;
+a {
+    text-decoration: none;
+}
+.nav-link{
+    color: #E8E6E5;
+    border-bottom: 0.15rem solid transparent;
+}
+.nav-link:hover, .nav-link:focus{
+    color: #E8E6E5;
+    border-bottom-color:#E8E6E5;
 }
 
-footer.footer.custom-footer {
-    background-color: var(--bs-dark) !important;
-    background-image: none !important;
+.btn:hover, .btn:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: solid 1px rgba(255, 255, 255, 0.6);
 }

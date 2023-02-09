@@ -7,7 +7,25 @@
         <div class="col-md-8">Most popular categories: <a class="px-3" href="/plans?country=france">France</a><a
                 class="px-3" href="/plans?country=italy">Italy</a></div>
     </div>
-    <div id="map" style="height: 500px;" class="mb-5"></div>
+    <button id='mapShow' type="button" class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#mapModal">
+        Show on map
+      </button>
+      
+    <div id='mapModal' class="modal fade">
+        <div class="modal-dialog modal-xl modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">All Plans in <%= country %></h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex">
+                    <div id="mapContainer">
+                        <div id="map"></div>
+                    </div>
+                </div>
+              </div>   
+        </div>       
+    </div>
 
     <% for (let plan of plans) {%>
         <div class="card shadow-sm mb-3">
@@ -28,7 +46,7 @@
                         <p class="card-text">
                             <%= plan.description%>
                         </p>
-                        <a href="/plans/<%= plan._id%>" class="btn btn-info">Details</a>
+                        <a href="/plans/<%= plan._id%>" class="btn btn-success text-secondary">Details</a>
                     </div>
                 </div>
             </div>

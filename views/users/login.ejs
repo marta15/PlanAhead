@@ -2,12 +2,12 @@
 
 
     <div class="row">
-        <div class="col-md-6 offset-3">
+        <div class="col-md-6 offset-md-3">
             <h1 class="text-center">Log in</h1>
             <form action="/login" method="POST" novalidate class="needs-validation">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
+                    <input type="text" class="form-control" id="username" name="username" required autofocus>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
@@ -25,7 +25,9 @@
                         Please provide a password.
                     </div>
                 </div>
-                <button class="btn btn-primary">Log in</button>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary text-secondary btn-block">Log in</button>
+                </div>
             </form>
         </div>
     </div>
